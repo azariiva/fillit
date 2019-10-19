@@ -35,7 +35,7 @@ LIBFT_FUNCS = ft_memset ft_memdel ft_strnew ft_strdel ft_strclr ft_striter \
 			  ft_putendl ft_putnbr ft_abs ft_putchar_fd ft_putstr_fd \
 			  ft_putendl_fd ft_putnbr_fd ft_lstnew ft_lstdelone ft_lstdel \
 			  ft_memcmp ft_lstadd ft_lstiter ft_lstmap ft_getc
-LIBFI_FUNCS = gettetr deltetr gettetrlst puttetr puttetrlst
+LIBFI_FUNCS = gettetr deltetr gettetrlst puttetr puttetrlst validate validatelst
 
 # object files
 LIBFT_O_FILES =  $(patsubst %, $(OBJ)/$(LIBFT)/%.o, $(LIBFT_FUNCS))
