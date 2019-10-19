@@ -10,11 +10,10 @@ int main(int ac, char **av)
         //TODO: Show usage of program
         return (0);
     }
-    if ((fd = open(av[1], O_RDONLY)) < 0 || !(tetrlst = gettetrlst(fd)) || validatelst(tetrlst) == ERR) {
+    if ((fd = open(av[1], O_RDONLY)) < 0 || !(tetrlst = gettetrlst(fd)) || validatelst(tetrlst) == ERR)
         ft_putendl("error");
-        return (0);
-    }
-    puttetrlst(tetrlst);
+    else 
+        puttetrlst(tetrlst);
     ft_lstdel(&tetrlst, &deltetr);
     return (0);
 }
