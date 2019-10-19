@@ -14,7 +14,7 @@ typedef enum    e_err
 }               t_err;
 
 void    deltetr(void *content, size_t content_size);
-t_err   gettetr(int fd, char **tetr);
+t_err   gettetr(int fd, char *tetr);
 t_list  *gettetrlst(int fd);
 void    puttetr(char *tetr);
 void    puttetrlst(t_list *lst);

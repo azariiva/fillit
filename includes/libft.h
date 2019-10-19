@@ -3,7 +3,8 @@
 # define LIBFT_H
 
 # include <string.h>
-# include <libc.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 # define ISWHITESPACE(a) ((a) == ' ' || (a) == '\n' || (a) == '\t')
 

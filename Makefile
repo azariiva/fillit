@@ -46,10 +46,10 @@ MAIN_O_FILE = $(patsubst %, $(OBJ)/$(MAIN)/%.o, $(MAIN))
 
 all: $(EXEC_NAME)
 
-$(EXEC_NAME): $(STATIC)/$(LIBFT).a $(STATIC)/$(LIBFI).a $(MAIN_O_FILE)
-	clang -o $(EXEC_NAME) $(MAIN_O_FILE) -I $(INCLUDES) -L $(STATIC) -lft -lfi
+$(EXEC_NAME): $(STATIC)/$(LIBFT).a $(LIBFI_O_FILES) $(MAIN_O_FILE)
+	clang -o $(EXEC_NAME) $(MAIN_O_FILE) $(LIBFI_O_FILES) -I $(INCLUDES) -L $(STATIC) -lft
 
-$(OBJ)/$(MAIN)/%.o: $(SRCS)/$(MAIN)/%.c $(LIBFI_HEADER) $(LIBFT_HEADER)
+$(OBJ)/$(MAIN)/%.o: $(SRCS)/$(MAIN)/%.c $(LIBFI_HEADER) $(LIBFT_HEADER) 
 	@mkdir -p $(OBJ)
 	@mkdir -p $(OBJ)/$(MAIN)
 	$(CC) $(CF) -c $< -o $@ -I $(INCLUDES)
@@ -63,11 +63,6 @@ $(OBJ)/$(LIBFT)/%.o: $(SRCS)/$(LIBFT)/%.c $(LIBFT_HEADER)
 	@mkdir -p $(OBJ)
 	@mkdir -p $(OBJ)/$(LIBFT)
 	$(CC) $(CF) -c $< -o $@ -I $(INCLUDES)
-
-$(STATIC)/$(LIBFI).a: $(LIBFI_O_FILES)
-	@mkdir -p $(STATIC)
-	ar rc $(STATIC)/$(LIBFI).a $(LIBFI_O_FILES)
-	ranlib $(STATIC)/$(LIBFI).a
 
 $(OBJ)/$(LIBFI)/%.o: $(SRCS)/$(LIBFI)/%.c $(LIBFI_HEADER) $(LIBFT_HEADER)
 	@mkdir -p $(OBJ)
