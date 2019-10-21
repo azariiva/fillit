@@ -1,19 +1,8 @@
 #include "libfi.h"
 
-void    puttetr(char *tetr)
+t_err   puttetr(t_tetr *tetr, t_field *map, t_coord place)
 {
-    size_t  i;
-
-    if (tetr)
-    {
-        i = 0;
-        while (i < TETR_SIZE)
-        {
-            write(1, tetr + i++ * TETR_SIZE, TETR_SIZE);
-            ft_putchar('\n');
-        }
-        ft_putchar('\n');
-    }
-    else
-        ft_putendl("NULL\n");
+    if (tetr && map && place.x != -1)
+        return (OK);
+    return (ERR);
 }

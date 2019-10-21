@@ -1,6 +1,6 @@
 #include "libfi.h"
 
-t_err   validate(char *tetr)
+t_err   validate(const char *tetr)
 {
     int ctr_nei;
     int ctr_pcs;

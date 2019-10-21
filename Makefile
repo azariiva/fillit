@@ -8,10 +8,11 @@ LIBFT = libft
 LIBFI = libfi
 
 # compiler
-CC = clang
+CC = gcc
 
 # compilation flags
 CF = -Wall -Wextra -Werror
+DF = -ggdb
 
 # directories
 SRCS = ./srcs
@@ -34,8 +35,9 @@ LIBFT_FUNCS = ft_memset ft_memdel ft_strnew ft_strdel ft_strclr ft_striter \
 			  ft_toupper ft_tolower ft_itoa ft_strsplit ft_putchar ft_putstr \
 			  ft_putendl ft_putnbr ft_abs ft_putchar_fd ft_putstr_fd \
 			  ft_putendl_fd ft_putnbr_fd ft_lstnew ft_lstdelone ft_lstdel \
-			  ft_memcmp ft_lstadd ft_lstiter ft_lstmap ft_getc
-LIBFI_FUNCS = gettetr deltetr gettetrlst puttetr puttetrlst validate validatelst
+			  ft_memcmp ft_lstadd ft_lstiter ft_lstmap ft_getc ft_lstsize
+LIBFI_FUNCS = gettetr deltetr gettetrlst puttetr puttetrlst validate validatelst \
+			  printtetr printtetrlst
 
 # object files
 LIBFT_O_FILES =  $(patsubst %, $(OBJ)/$(LIBFT)/%.o, $(LIBFT_FUNCS))
@@ -47,7 +49,7 @@ MAIN_O_FILE = $(patsubst %, $(OBJ)/$(MAIN)/%.o, $(MAIN))
 all: $(EXEC_NAME)
 
 $(EXEC_NAME): $(STATIC)/$(LIBFT).a $(LIBFI_O_FILES) $(MAIN_O_FILE)
-	clang -o $(EXEC_NAME) $(MAIN_O_FILE) $(LIBFI_O_FILES) -I $(INCLUDES) -L $(STATIC) -lft
+	$(CC) $(DF) -o $(EXEC_NAME) $(MAIN_O_FILE) $(LIBFI_O_FILES) -I $(INCLUDES) -L $(STATIC) -lft
 
 $(OBJ)/$(MAIN)/%.o: $(SRCS)/$(MAIN)/%.c $(LIBFI_HEADER) $(LIBFT_HEADER) 
 	@mkdir -p $(OBJ)

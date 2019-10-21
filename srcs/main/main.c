@@ -13,7 +13,7 @@ int main(int ac, char **av)
     if ((fd = open(av[1], O_RDONLY)) < 0 || !(tetrlst = gettetrlst(fd)) || validatelst(tetrlst) == ERR)
         ft_putendl("error");
     else 
-        puttetrlst(tetrlst);
+        printtetrlst(tetrlst);
     ft_lstdel(&tetrlst, &deltetr);
     return (0);
 }

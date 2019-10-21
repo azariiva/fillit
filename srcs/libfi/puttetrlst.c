@@ -1,10 +1,8 @@
 #include "libfi.h"
 
-void    puttetrlst(t_list *lst)
+t_err   puttetrlst(t_list *lst, t_field *map)
 {
-    while (lst)
-    {
-        puttetr(lst->content);
-        lst = lst->next;
-    }
+    if (lst && map)
+        return (OK);
+    return (ERR);
 }

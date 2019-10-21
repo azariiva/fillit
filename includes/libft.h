@@ -81,6 +81,7 @@ t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 /*
 ** Functions added specifically for fillit
 */
+size_t			ft_lstsize(t_list *lst);
 char			ft_getc(int fd);
 
 #endif
