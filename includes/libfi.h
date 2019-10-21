@@ -30,7 +30,7 @@ typedef struct  s_tetr
 
 typedef struct  s_field
 {
-    char    **field;
+    char    **body;
     int     size;
     int     realsize;
 }               t_field;
@@ -45,7 +45,7 @@ t_err   validatelst(t_list *lst);
 void    printtetr(t_tetr *tetr);
 void    printtetrlst(t_list *lst);
 
-t_err   puttetr(t_tetr *tetr, t_field *map, t_coord place);
-t_err   puttetrlst(t_list *lst, t_field *map);
+t_err   puttetr(t_tetr *tetr, t_field *map, t_coord place, char letter);
+t_err   puttetrlst(t_list *lst, t_field *map, char letter);
 
 #endif

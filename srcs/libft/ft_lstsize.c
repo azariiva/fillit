@@ -2,5 +2,16 @@
 
 size_t			ft_lstsize(t_list *lst)
 {
-    return (lst ? 0 : -1);
+    size_t  ctr;
+
+    if (lst) {
+        ctr = 0;
+        while (lst)
+        {
+            ++ctr;
+            lst = lst->next;
+        }
+        return (ctr);
+    }
+    return (0);
 }
