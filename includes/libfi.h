@@ -24,6 +24,7 @@ typedef struct  s_coord
 typedef struct  s_tetr
 {
     char    body[TETR_SIZE * TETR_SIZE];
+    char    color;
     t_coord uleft;
     t_coord dright;
 }               t_tetr;
@@ -35,17 +36,13 @@ typedef struct  s_field
     int     realsize;
 }               t_field;
 
-void    deltetr(void *content, size_t content_size);
-t_err   gettetr(int fd, t_tetr *tetr);
-t_list  *gettetrlst(int fd);
-
-t_err   validate(const char *tetr);
-t_err   validatelst(t_list *lst);
-
+// DEBUG PURPOSE ONLY
 void    printtetr(t_tetr *tetr);
 void    printtetrlst(t_list *lst);
 
-t_err   puttetr(t_tetr *tetr, t_field *map, t_coord place, char letter);
-t_err   puttetrlst(t_list *lst, t_field *map, char letter);
+void    deltetr(void *content, size_t content_size);
+t_list  *gettetrlst(int fd);
+
+t_err   puttetrlst(t_list *lst, t_field *map);
 
 #endif

@@ -1,5 +1,39 @@
 #include "libfi.h"
 
+static void     placetetr(t_tetr *tetr, char **map, t_coord place)
+{
+    int x;
+    int y;
+
+    y = -1;
+    while (++y <= tetr->dright.y - tetr->uleft.y)
+    {
+        x = -1;
+        while (++x <= tetr->dright.x - tetr->uleft.x)
+            if (tetr->body[(y + tetr->uleft.y) * TETR_SIZE + x + tetr->uleft.x] == FILLED) 
+                map[place.y + y][place.x + x] = tetr->color;
+    }
+}
+
+static t_err    puttetr(t_tetr *tetr, t_field *map, t_coord place)
+{
+    int x;
+    int y;
+    
+    if (tetr->dright.x - tetr->uleft.x + place.x >= map->size || tetr->dright.y - tetr->uleft.y + place.y >= map->size)
+        return (ERR);
+    y = -1;
+    while (++y <= tetr->dright.y - tetr->uleft.y)
+    {
+        x = -1;
+        while (++x <= tetr->dright.x - tetr->uleft.x)
+            if (ft_isupper(map->body[place.y + y][place.x + x]) && tetr->body[(y + tetr->uleft.y) * TETR_SIZE + x + tetr->uleft.x] == FILLED)
+                return (ERR);
+    }
+    placetetr(tetr, map->body, place);
+    return (OK);
+}
+
 // static void deltetrff(t_tetr *tetr, char **map, t_coord place, char letter)
 // {
 //     int x;
@@ -19,18 +53,17 @@
 //     }
 // }
 
-
-
-static void deltetrff(t_coord place, char letter, t_field *map)
+// TODO: realize what's wrong with upper deltetrff
+static void     deltetrff(t_coord place, char letter, t_field *map)
 {
     int x;
     int y;
 
     y = place.y;
-    while (y < 4 + place.y && y < map->size)
+    while (y < TETR_SIZE + place.y && y < map->size)
     {
         x = place.x;
-        while (x < 4 + place.x && x < map->size)
+        while (x < TETR_SIZE + place.x && x < map->size)
         {
             if (map->body[y][x] == letter)
                 map->body[y][x] = EMPTY;
@@ -40,10 +73,10 @@ static void deltetrff(t_coord place, char letter, t_field *map)
     }
 }
 
-t_err puttetrlst(t_list *lst, t_field *map, char letter)
+t_err           puttetrlst(t_list *lst, t_field *map)
 {
     t_coord place;
-    int flag;
+    int     flag;
 
     place.y = 0;
     place.x = -1;
@@ -51,49 +84,20 @@ t_err puttetrlst(t_list *lst, t_field *map, char letter)
     {
         flag = 0;
         while (!flag && ++place.x < map->size)
-        {
-            if (puttetr(lst->content, map, place, letter) == OK)
+            if (puttetr(lst->content, map, place) == OK)
                 flag = 1;
-        }
         while (!flag && ++place.y < map->size)
         {
             place.x = -1;
             while (!flag && ++place.x < map->size)
-            {
-                if (puttetr(lst->content, map, place, letter) == OK)
+                if (puttetr(lst->content, map, place) == OK)
                     flag = 1;
-            }
         }
         if (!flag)
-        {
-            // for (int i = 0; i < map->size; i++)
-            // {
-            //     for (int j = 0; j < map->size; j++)
-            //         ft_putchar(map->body[i][j]);
-            //     ft_putchar('\n');
-            // }
-            // ft_putchar('\n');
             return (ERR);
-        }
-        else if (!lst->next || puttetrlst(lst->next, map, letter + 1) == OK)
+        else if (!lst->next || puttetrlst(lst->next, map) == OK)
             return (OK);
-        // for (int i = 0; i < map->size; i++)
-        //     {
-        //         for (int j = 0; j < map->size; j++)
-        //             ft_putchar(map->body[i][j]);
-        //         ft_putchar('\n');
-        //     }
-        //     ft_putchar('\n');
-        //deltetrff((t_tetr *)lst->content, map->body, place, letter);
-        deltetrff(place, letter, map);
-        // for (int i = 0; i < map->size; i++)
-        //     {
-        //         for (int j = 0; j < map->size; j++)
-        //             ft_putchar(map->body[i][j]);
-        //         ft_putchar('\n');
-        //     }
-        //     ft_putchar('\n');
-        // ft_putchar('\n');
+        deltetrff(place, ((t_tetr *)lst->content)->color, map);
     }
     return (ERR);
 }

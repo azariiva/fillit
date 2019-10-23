@@ -1,5 +1,5 @@
 # executable
-EXEC_NAME = fillit
+NAME = fillit
 
 MAIN = main
 
@@ -36,8 +36,7 @@ LIBFT_FUNCS = ft_memset ft_memdel ft_strnew ft_strdel ft_strclr ft_striter \
 			  ft_putendl ft_putnbr ft_abs ft_putchar_fd ft_putstr_fd \
 			  ft_putendl_fd ft_putnbr_fd ft_lstnew ft_lstdelone ft_lstdel \
 			  ft_memcmp ft_lstadd ft_lstiter ft_lstmap ft_getc ft_lstsize
-LIBFI_FUNCS = gettetr deltetr gettetrlst puttetr puttetrlst validate validatelst \
-			  printtetr printtetrlst
+LIBFI_FUNCS = deltetr gettetrlst puttetrlst printtetr printtetrlst
 
 # object files
 LIBFT_O_FILES =  $(patsubst %, $(OBJ)/$(LIBFT)/%.o, $(LIBFT_FUNCS))
@@ -46,10 +45,10 @@ MAIN_O_FILE = $(patsubst %, $(OBJ)/$(MAIN)/%.o, $(MAIN))
 
 .PHONY: re all clean fclean clean_libft fclean_libft clean_libfi fclean_libfi
 
-all: $(EXEC_NAME)
+all: $(NAME)
 
-$(EXEC_NAME): $(STATIC)/$(LIBFT).a $(LIBFI_O_FILES) $(MAIN_O_FILE)
-	$(CC) $(DF) -o $(EXEC_NAME) $(MAIN_O_FILE) $(LIBFI_O_FILES) -I $(INCLUDES) -L $(STATIC) -lft
+$(NAME): $(STATIC)/$(LIBFT).a $(LIBFI_O_FILES) $(MAIN_O_FILE)
+	$(CC) $(DF) -o $(NAME) $(MAIN_O_FILE) $(LIBFI_O_FILES) -I $(INCLUDES) -L $(STATIC) -lft
 
 $(OBJ)/$(MAIN)/%.o: $(SRCS)/$(MAIN)/%.c $(LIBFI_HEADER) $(LIBFT_HEADER) 
 	@mkdir -p $(OBJ)
@@ -76,6 +75,6 @@ clean:
 	rm -rf $(STATIC)
 	
 fclean: clean
-	rm -f $(EXEC_NAME)
+	rm -f $(NAME)
 
 re: clean all

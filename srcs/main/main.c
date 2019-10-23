@@ -7,28 +7,43 @@ static void cleanbody(char **map, int realsize)
 
     i = 0;
     while (i < realsize)
-    {
         free(map[i++]);
-    }
     free(map);
+}
+
+static void printbody(char **map, int size)
+{
+    int i;
+
+    i = 0;
+    while (i < size)
+    {
+        write(STDOUT_FILENO, map[i++], size);
+        ft_putchar('\n');
+    }
 }
 
 static int makemap(t_field *map, int lstsize)
 {
+    int i;
+    int j;
+
     map->realsize = (lstsize == 1 ? 4 : lstsize * 3);
-    if (!(map->body = (char **)malloc(map->realsize * sizeof(char *))))
+    if (lstsize > 26 || !(map->body = (char **)malloc(map->realsize * sizeof(char *))))
         return (ERR);
-    for (int i = 0; i < map->realsize; i++)
+    i = -1;
+    while (++i < map->realsize)
     {
         if (!(map->body[i] = (char *)malloc(map->realsize * sizeof(char))))
         {
             cleanbody(map->body, i);
             return (ERR);
         }
-
-        for (int j = 0; j < map->realsize; j++)
-            map->body[i][j] = '.';
+        j = 0;
+        while (j < map->realsize)
+            map->body[i][j++] = '.';
     }
+    // TODO: make map->size (lower bound) more precise
     map->size = 2;
     return (OK);
 }
@@ -39,37 +54,31 @@ int main(int ac, char **av)
     t_list *tetrlst;
     t_field map;
 
-    if (ac != 2)
+    if (ac == 2)
     {
-        //TODO: Show usage of program
-        return (0);
-    }
-    if ((fd = open(av[1], O_RDONLY)) < 0 || !(tetrlst = gettetrlst(fd)))
-    {
-        ft_putendl("error");
-        return (0);
-    }
-    if (validatelst(tetrlst) == ERR || makemap(&map, ft_lstsize(tetrlst)) == ERR)
-    {
-        ft_lstdel(&tetrlst, &deltetr);
-        ft_putendl("error");
-        return (0);
-    }
-    while (puttetrlst(tetrlst, &map, 'A') == ERR)
-    {
-        map.size++;
-        for (int i = 0; i < map.size; i++)
+        if ((fd = open(av[1], O_RDONLY)) > 0)
         {
-            for (int j = 0; j < map.size; j++)
-                map.body[i][j] = EMPTY;
+            if ((tetrlst = gettetrlst(fd)))
+            {
+                if (makemap(&map, ft_lstsize(tetrlst)) == OK)
+                {
+                    while (puttetrlst(tetrlst, &map) == ERR)
+                        map.size++;
+                    printbody(map.body, map.size);
+                    cleanbody(map.body, map.realsize);
+                }
+                else
+                    ft_putendl("error");
+                ft_lstdel(&tetrlst, &deltetr);
+            }
+            else
+                ft_putendl("error");
+            close(fd);
         }
+        else
+            ft_putendl("error");
     }
-    for (int i = 0; i < map.size; i++)
-    {
-        for (int j = 0; j < map.size; j++)
-            ft_putchar(map.body[i][j]);
-        ft_putchar('\n');
-    }
-    ft_lstdel(&tetrlst, &deltetr);
+    else
+        ft_putendl("usage: ./fillit source_file");
     return (0);
 }
