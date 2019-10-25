@@ -10,30 +10,30 @@
 
 typedef enum    e_err
 {
-    ERR = -1,
-    END = 0,
-    OK = 1
+	ERR = -1,
+	END = 0,
+	OK = 1
 }               t_err;
 
 typedef struct  s_coord
 {
-    int x;
-    int y;
+	int x;
+	int y;
 }               t_coord;
 
 typedef struct  s_tetr
 {
-    char    body[TETR_SIZE * TETR_SIZE];
-    char    color;
-    t_coord uleft;
-    t_coord dright;
+	char    body[TETR_SIZE * TETR_SIZE];
+	char    color;
+	t_coord uleft;
+	t_coord dright;
 }               t_tetr;
 
 typedef struct  s_field
 {
-    char    **body;
-    int     size;
-    int     realsize;
+	char    **body;
+	int     size;
+	int     realsize;
 }               t_field;
 
 // DEBUG PURPOSE ONLY
