@@ -17,7 +17,7 @@
 # include "libft.h"
 
 # define TETR_SIZE 4
-# define FILLED '#'
+# define F '#'
 # define EMPTY '.'
 
 typedef enum	e_err

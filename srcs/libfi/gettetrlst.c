@@ -6,7 +6,7 @@
 /*   By: blinnea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 19:06:29 by blinnea           #+#    #+#             */
-/*   Updated: 2019/10/25 19:08:53 by blinnea          ###   ########.fr       */
+/*   Updated: 2019/10/25 19:39:41 by fhilary          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_err	get_frstpos(char *line, int *frst)
 	i = 0;
 	while (i < TETR_SIZE)
 	{
-		if (line[i] == FILLED)
+		if (line[i] == F)
 		{
 			if (*frst == -1 || *frst > i)
 				*frst = i;
@@ -37,7 +37,7 @@ static void		get_lastpos(char *line, int *last)
 	i = 0;
 	while (i < TETR_SIZE)
 	{
-		if (line[i] == FILLED)
+		if (line[i] == F)
 		{
 			if (*last == -1 || *last < i)
 				*last = i;
@@ -61,15 +61,12 @@ static t_err	validate(const char *tetr)
 		j = -1;
 		while (++j < TETR_SIZE)
 		{
-			if (tetr[i * TETR_SIZE + j] == FILLED)
+			if (tetr[i * TETR_SIZE + j] == F && (++ctr_pcs))
 			{
-				++ctr_pcs;
-				ctr_nei += (j > 0 && tetr[i * TETR_SIZE + (j - 1)] == FILLED);
-				ctr_nei += (j < TETR_SIZE - 1 && tetr[i * TETR_SIZE + (j + 1)] \
-						== FILLED);
-				ctr_nei += (i > 0 && tetr[(i - 1) * TETR_SIZE + j] == FILLED);
-				ctr_nei += (i < TETR_SIZE - 1 && tetr[(i + 1) * TETR_SIZE + j] \
-						== FILLED);
+				ctr_nei += (j > 0 && tetr[i * TETR_SIZE + (j - 1)] == F) +
+					(j < TETR_SIZE - 1 && tetr[i * TETR_SIZE + (j + 1)] == F) +
+					(i > 0 && tetr[(i - 1) * TETR_SIZE + j] == F) +
+					(i < TETR_SIZE - 1 && tetr[(i + 1) * TETR_SIZE + j] == F);
 			}
 			else if (tetr[i * TETR_SIZE + j] != EMPTY)
 				return (ERR);
@@ -82,11 +79,11 @@ static t_err	gettetr(int fd, t_tetr *tetr, char color)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	tetr->uleft.y = -1;
 	tetr->uleft.x = -1;
 	tetr->dright.x = -1;
-	while (i < TETR_SIZE)
+	while (++i < TETR_SIZE)
 	{
 		if (read(fd, tetr->body + i * TETR_SIZE, TETR_SIZE) != TETR_SIZE)
 			return (ERR);
@@ -103,7 +100,6 @@ static t_err	gettetr(int fd, t_tetr *tetr, char color)
 		}
 		if (ft_getc(fd) != '\n')
 			return (ERR);
-		++i;
 	}
 	if ((i = ft_getc(fd)) != '\n' && i)
 		return (ERR);
