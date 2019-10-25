@@ -2,9 +2,9 @@
 
 void    printtetrlst(t_list *lst)
 {
-    while (lst)
-    {
-        printtetr(lst->content);
-        lst = lst->next;
-    }
+	while (lst)
+	{
+		printtetr(lst->content);
+		lst = lst->next;
+	}
 }
