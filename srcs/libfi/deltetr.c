@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deltetr.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blinnea <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/25 19:06:10 by blinnea           #+#    #+#             */
+/*   Updated: 2019/10/25 19:06:18 by blinnea          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libfi.h"
 
-void    deltetr(void *content, size_t content_size)
+void	deltetr(void *content, size_t content_size)
 {
 	if (content && content_size)
 		free(content);

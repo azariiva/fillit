@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gettetrlst.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blinnea <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/25 19:06:29 by blinnea           #+#    #+#             */
+/*   Updated: 2019/10/25 19:08:53 by blinnea          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libfi.h"
 
-static t_err    get_frstpos(char *line, int *frst)
+static t_err	get_frstpos(char *line, int *frst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < TETR_SIZE)
@@ -18,9 +30,9 @@ static t_err    get_frstpos(char *line, int *frst)
 	return (ERR);
 }
 
-static void     get_lastpos(char *line, int *last)
+static void		get_lastpos(char *line, int *last)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < TETR_SIZE)
@@ -34,38 +46,41 @@ static void     get_lastpos(char *line, int *last)
 	}
 }
 
-static t_err    validate(const char *tetr)
+static t_err	validate(const char *tetr)
 {
-	int ctr_nei;
-	int ctr_pcs;
-	int i;
-	int j;
+	int	ctr_nei;
+	int	ctr_pcs;
+	int	i;
+	int	j;
 
 	ctr_nei = 0;
 	ctr_pcs = 0;
-	i = 0;
-	while (i < TETR_SIZE)
+	i = -1;
+	while (++i < TETR_SIZE)
 	{
-		j = 0;
-		while (j < TETR_SIZE) {
-			if (tetr[i * TETR_SIZE + j] == FILLED) {
+		j = -1;
+		while (++j < TETR_SIZE)
+		{
+			if (tetr[i * TETR_SIZE + j] == FILLED)
+			{
 				++ctr_pcs;
 				ctr_nei += (j > 0 && tetr[i * TETR_SIZE + (j - 1)] == FILLED);
-				ctr_nei += (j < TETR_SIZE - 1 && tetr[i * TETR_SIZE + (j + 1)] == FILLED);
+				ctr_nei += (j < TETR_SIZE - 1 && tetr[i * TETR_SIZE + (j + 1)] \
+						== FILLED);
 				ctr_nei += (i > 0 && tetr[(i - 1) * TETR_SIZE + j] == FILLED);
-				ctr_nei += (i < TETR_SIZE - 1 && tetr[(i + 1) * TETR_SIZE + j] == FILLED);
-			} else if (tetr[i * TETR_SIZE + j] != EMPTY)
+				ctr_nei += (i < TETR_SIZE - 1 && tetr[(i + 1) * TETR_SIZE + j] \
+						== FILLED);
+			}
+			else if (tetr[i * TETR_SIZE + j] != EMPTY)
 				return (ERR);
-			++j;
 		}
-		++i;
 	}
 	return (ctr_nei >= 6 && ctr_pcs == TETR_SIZE ? OK : ERR);
 }
 
-static t_err    gettetr(int fd, t_tetr *tetr, char color)
+static t_err	gettetr(int fd, t_tetr *tetr, char color)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	tetr->uleft.y = -1;
@@ -98,13 +113,13 @@ static t_err    gettetr(int fd, t_tetr *tetr, char color)
 	return (i ? OK : END);
 }
 
-t_list          *gettetrlst(int fd)
+t_list			*gettetrlst(int fd)
 {
-	t_list  *lst;
-	t_list  *ptr;
-	t_tetr  tetr;
-	t_err   err;
-	char    color;
+	t_list	*lst;
+	t_list	*ptr;
+	t_tetr	tetr;
+	t_err	err;
+	char	color;
 
 	color = 'A';
 	lst = NULL;

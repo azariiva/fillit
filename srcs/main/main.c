@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blinnea <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/25 19:17:07 by blinnea           #+#    #+#             */
+/*   Updated: 2019/10/25 19:17:13 by blinnea          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libfi.h"
 #include <fcntl.h>
 
-static void cleanbody(char **map, int realsize)
+static void	cleanbody(char **map, int realsize)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < realsize)
@@ -11,9 +23,9 @@ static void cleanbody(char **map, int realsize)
 	free(map);
 }
 
-static void printbody(char **map, int size)
+static void	printbody(char **map, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < size)
@@ -23,13 +35,14 @@ static void printbody(char **map, int size)
 	}
 }
 
-static int makemap(t_field *map, int lstsize)
+static int	makemap(t_field *map, int lstsize)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	map->realsize = (lstsize == 1 ? 4 : lstsize * 3);
-	if (lstsize > 26 || !(map->body = (char **)malloc(map->realsize * sizeof(char *))))
+	if (lstsize > 26 || !(map->body = (char **)malloc(map->realsize * \
+					sizeof(char *))))
 		return (ERR);
 	i = -1;
 	while (++i < map->realsize)
@@ -47,11 +60,11 @@ static int makemap(t_field *map, int lstsize)
 	return (OK);
 }
 
-int main(int ac, char **av)
+int			main(int ac, char **av)
 {
-	int fd;
-	t_list *tetrlst;
-	t_field map;
+	int		fd;
+	t_list	*tetrlst;
+	t_field	map;
 
 	if (ac == 2)
 	{
