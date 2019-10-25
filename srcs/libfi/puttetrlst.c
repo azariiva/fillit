@@ -34,38 +34,18 @@ static t_err    puttetr(t_tetr *tetr, t_field *map, t_coord place)
     return (OK);
 }
 
-// static void deltetrff(t_tetr *tetr, char **map, t_coord place, char letter)
-// {
-//     int x;
-//     int y;
-
-//     y = 0;
-//     while (y <= tetr->dright.y - tetr->uleft.y)
-//     {
-//         x = 0;
-//         while (x <= tetr->dright.x - tetr->uleft.x)
-//         {
-//             if (tetr->body[(y + tetr->uleft.y) * TETR_SIZE + x + tetr->uleft.x] == letter)
-//                 map[place.y + y][place.x + x] = EMPTY;
-//             ++x;
-//         }
-//         ++y;
-//     }
-// }
-
-// TODO: realize what's wrong with upper deltetrff
-static void     deltetrff(t_coord place, char letter, t_field *map)
+static void     deltetrff(t_coord place, t_tetr *tetr, t_field *map)
 {
     int x;
     int y;
 
     y = place.y;
-    while (y < TETR_SIZE + place.y && y < map->size)
+    while (y <= tetr->dright.y - tetr->uleft.y + place.y && y < map->size)
     {
         x = place.x;
-        while (x < TETR_SIZE + place.x && x < map->size)
+        while (x <= tetr->dright.x - tetr->uleft.x + place.x && x < map->size)
         {
-            if (map->body[y][x] == letter)
+            if (map->body[y][x] == tetr->color)
                 map->body[y][x] = EMPTY;
             ++x;
         }
@@ -97,7 +77,7 @@ t_err           puttetrlst(t_list *lst, t_field *map)
             return (ERR);
         else if (!lst->next || puttetrlst(lst->next, map) == OK)
             return (OK);
-        deltetrff(place, ((t_tetr *)lst->content)->color, map);
+        deltetrff(place, (t_tetr *)lst->content, map);
     }
     return (ERR);
 }

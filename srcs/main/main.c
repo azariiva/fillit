@@ -43,7 +43,6 @@ static int makemap(t_field *map, int lstsize)
         while (j < map->realsize)
             map->body[i][j++] = '.';
     }
-    // TODO: make map->size (lower bound) more precise
     map->size = 2;
     return (OK);
 }
