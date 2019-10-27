@@ -90,21 +90,15 @@ static t_err	gettetr(int fd, t_tetr *tetr, char color)
 		if (get_frstpos(tetr->body + i * TETR_SIZE, &(tetr->uleft.x)) == OK)
 		{
 			if (tetr->uleft.y == -1)
-			{
 				tetr->uleft.y = i;
-				tetr->dright.y = i;
-			}
-			else
-				tetr->dright.y = i;
+			tetr->dright.y = i;
 			get_lastpos(tetr->body + i * TETR_SIZE, &(tetr->dright.x));
 		}
 		if (ft_getc(fd) != '\n')
 			return (ERR);
 	}
-	if ((i = ft_getc(fd)) != '\n' && i)
-		return (ERR);
 	tetr->color = color;
-	if (validate(tetr->body) == ERR)
+	if (((i = ft_getc(fd)) != '\n' && i) || validate(tetr->body) == ERR)
 		return (ERR);
 	return (i ? OK : END);
 }
@@ -126,6 +120,8 @@ t_list			*gettetrlst(int fd)
 		ptr = lst;
 		while (err == OK)
 		{
+			if ((err = (color > 'Z' ? ERR : OK)) == ERR)
+				break ;
 			err = gettetr(fd, &tetr, color++);
 			ptr->next = ft_lstnew(&tetr, sizeof(t_tetr));
 			ptr = ptr->next;

@@ -23,7 +23,7 @@ static void		placetetr(t_tetr *tetr, char **map, t_coord place)
 		x = -1;
 		while (++x <= tetr->dright.x - tetr->uleft.x)
 			if (tetr->body[(y + tetr->uleft.y) * TETR_SIZE + x + \
-					tetr->uleft.x] == FILLED)
+					tetr->uleft.x] == F)
 				map[place.y + y][place.x + x] = tetr->color;
 	}
 }
@@ -43,7 +43,7 @@ static t_err	puttetr(t_tetr *tetr, t_field *map, t_coord place)
 		while (++x <= tetr->dright.x - tetr->uleft.x)
 			if (ft_isupper(map->body[place.y + y][place.x + x]) && \
 					tetr->body[(y + tetr->uleft.y) * TETR_SIZE + x + \
-					tetr->uleft.x] == FILLED)
+					tetr->uleft.x] == F)
 				return (ERR);
 	}
 	placetetr(tetr, map->body, place);

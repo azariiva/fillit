@@ -15,7 +15,7 @@
 
 static void	cleanbody(char **map, int realsize)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < realsize)
@@ -25,7 +25,7 @@ static void	cleanbody(char **map, int realsize)
 
 static void	printbody(char **map, int size)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < size)
@@ -37,12 +37,11 @@ static void	printbody(char **map, int size)
 
 static int	makemap(t_field *map, int lstsize)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	map->realsize = (lstsize == 1 ? 4 : lstsize * 3);
-	if (lstsize > 26 || !(map->body = (char **)malloc(map->realsize * \
-					sizeof(char *))))
+	if (!(map->body = (char **)malloc(map->realsize * sizeof(char *))))
 		return (ERR);
 	i = -1;
 	while (++i < map->realsize)
@@ -60,32 +59,40 @@ static int	makemap(t_field *map, int lstsize)
 	return (OK);
 }
 
+static int	fill_landm(char *fname, t_list **tetrlst, t_field *map)
+{
+	int	fd;
+
+	if ((fd = open(fname, O_RDONLY)) < 0)
+		return (ERR);
+	if (!(*tetrlst = gettetrlst(fd)))
+	{
+		close(fd);
+		return (ERR);
+	}
+	close(fd);
+	if (makemap(map, ft_lstsize(*tetrlst)) == ERR)
+	{
+		ft_lstdel(tetrlst, &deltetr);
+		return (ERR);
+	}
+	return (OK);
+}
+
 int			main(int ac, char **av)
 {
-	int		fd;
 	t_list	*tetrlst;
 	t_field	map;
 
 	if (ac == 2)
 	{
-		if ((fd = open(av[1], O_RDONLY)) > 0)
+		if (fill_landm(av[1], &tetrlst, &map) == OK)
 		{
-			if ((tetrlst = gettetrlst(fd)))
-			{
-				if (makemap(&map, ft_lstsize(tetrlst)) == OK)
-				{
-					while (puttetrlst(tetrlst, &map) == ERR)
-						map.size++;
-					printbody(map.body, map.size);
-					cleanbody(map.body, map.realsize);
-				}
-				else
-					ft_putendl("error");
-				ft_lstdel(&tetrlst, &deltetr);
-			}
-			else
-				ft_putendl("error");
-			close(fd);
+			while (puttetrlst(tetrlst, &map) == ERR)
+				map.size++;
+			printbody(map.body, map.size);
+			cleanbody(map.body, map.realsize);
+			ft_lstdel(&tetrlst, &deltetr);
 		}
 		else
 			ft_putendl("error");
